@@ -4,6 +4,7 @@ module.exports = {
 	theme: {
 		fontFamily: {
 			hero: ["Quicksand", "sans-serif"],
+			second: ["Roboto", "sans-serif"],
 		},
 		extend: {},
 	},
