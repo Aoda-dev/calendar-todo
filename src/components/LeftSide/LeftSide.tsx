@@ -15,7 +15,7 @@ const LeftSide = () => {
 			</div>
 
 			<div className="h-1/2">
-				<div className="text-white/30 space-x-6 font-second py-3 border-b border-b-slate-500">
+				<div className="text-white/30 space-x-8 font-hero font-bold py-3 border-b border-b-slate-500">
 					<button className="hover:text-white">Add</button>
 					<button className="hover:text-white">Select all</button>
 					<button className="hover:text-white">Delete</button>
