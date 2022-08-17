@@ -56,7 +56,7 @@ const App: React.FC = () => {
 	};
 
 	return (
-		<div className="w-screen h-screen flex items-center justify-center">
+		<div className="flex h-screen w-screen items-center justify-center">
 			<LeftSide />
 			<RightSide
 				year={year}

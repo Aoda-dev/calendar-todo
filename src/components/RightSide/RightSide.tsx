@@ -18,41 +18,41 @@ const RightSide: React.FC<Props> = (props: Props) => {
 	const result = getMonthDays({ year, month });
 
 	return (
-		<div className="w-1/2 h-screen bg-white px-10">
-			<div className="h-1/2 flex justify-center items-center">
+		<div className="h-screen w-1/2 bg-white px-10">
+			<div className="flex h-1/2 items-center justify-center">
 				<div className="space-y-3">
-					<div className="flex items-center space-x-3 justify-center">
+					<div className="flex items-center justify-center space-x-3">
 						<button onClick={() => prevMonth()} className="hover:text-pink-500">
 							<CaretLeft weight="bold" size={"1.2rem"} />
 						</button>
-						<span className="font-hero text-2xl font-bold -mt-0.5">{monthsNames[month]}</span>
+						<span className="-mt-0.5 font-hero text-2xl font-bold">{monthsNames[month]}</span>
 						<button onClick={() => nextMonth()} className="hover:text-pink-500">
 							<CaretRight weight="bold" size={"1.2rem"} />
 						</button>
 					</div>
 
 					<div>
-						<span className="font-hero font-thin text-slate-300 text-8xl tracking-wider">
+						<span className="font-hero text-8xl font-thin tracking-wider text-slate-300">
 							2K{year.toString().slice(-2)}
 						</span>
 					</div>
 				</div>
 			</div>
 
-			<div className="h-1/2 flex flex-col items-center space-y-6">
-				<div className="mt-2 container max-w-md h-max grid grid-cols-7 grid-flow-row gap-2">
+			<div className="flex h-1/2 flex-col items-center space-y-6">
+				<div className="container mt-2 grid h-max max-w-md grid-flow-row grid-cols-7 gap-2">
 					{daysNames.map((dayName) => (
-						<div key={dayName} className="font-hero font-bold uppercase text-center text-slate-600">
+						<div key={dayName} className="text-center font-hero font-bold uppercase text-slate-600">
 							{dayName.slice(0, 3)}
 						</div>
 					))}
 				</div>
 
-				<div className="container max-w-md h-max grid grid-cols-7 grid-flow-row gap-2">
+				<div className="container grid h-max max-w-md grid-flow-row grid-cols-7 gap-2">
 					{result.map((day) => (
 						<div
 							key={day.status + day.day}
-							className={`text-center font-hero font-medium cursor-pointer ${
+							className={`cursor-pointer text-center font-hero font-medium ${
 								day.status === "current" ? "text-zinc-600" : "text-zinc-300"
 							} hover:text-pink-500`}
 						>
