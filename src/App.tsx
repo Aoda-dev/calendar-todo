@@ -7,7 +7,6 @@ import RightSide from "./components/RightSide/RightSide";
 const App: React.FC = () => {
 	const [year, setYear] = useState<number>(dayjs().year());
 	const [month, setMonth] = useState<number>(dayjs().month());
-	const [today, setToday] = useState<number>(dayjs().day());
 
 	const daysNames: Array<string> = [
 		"Sunday",
@@ -64,7 +63,6 @@ const App: React.FC = () => {
 				month={month}
 				monthsNames={monthsNames}
 				daysNames={daysNames}
-				today={today}
 				nextMonth={nextMonth}
 				prevMonth={prevMonth}
 			/>

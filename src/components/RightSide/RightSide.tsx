@@ -6,7 +6,6 @@ import { getMonthDays } from "../../helper/getMonthDays";
 type Props = {
 	year: number;
 	month: number;
-	today: number;
 	monthsNames: Array<string>;
 	daysNames: Array<string>;
 	nextMonth: () => void;
@@ -14,7 +13,7 @@ type Props = {
 };
 
 const RightSide: React.FC<Props> = (props: Props) => {
-	const { monthsNames, month, year, today, daysNames, nextMonth, prevMonth } = props;
+	const { monthsNames, month, year, daysNames, nextMonth, prevMonth } = props;
 
 	const result = getMonthDays({ year, month });
 
@@ -40,7 +39,7 @@ const RightSide: React.FC<Props> = (props: Props) => {
 				</div>
 			</div>
 
-			<div className="h-1/2 flex justify-center ">
+			<div className="h-1/2 flex justify-center bg-red-500">
 				<div className="container max-w-md h-max grid grid-cols-7 grid-flow-row gap-2">
 					{daysNames.map((dayName) => (
 						<div
@@ -55,7 +54,7 @@ const RightSide: React.FC<Props> = (props: Props) => {
 						<div
 							key={day.status + day.day}
 							className={`text-center font-hero font-medium cursor-pointer ${
-								day.status === "current" ? "text-slate-600" : "text-slate-300"
+								day.status === "current" ? "text-zinc-600" : "text-zinc-300"
 							} hover:text-pink-500`}
 						>
 							{day.day}
