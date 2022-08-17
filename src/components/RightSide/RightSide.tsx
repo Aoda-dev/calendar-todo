@@ -39,13 +39,10 @@ const RightSide: React.FC<Props> = (props: Props) => {
 				</div>
 			</div>
 
-			<div className="h-1/2 flex flex-col items-center">
-				<div className="container max-w-md h-max grid grid-cols-7 grid-flow-row gap-2">
+			<div className="h-1/2 flex flex-col items-center space-y-6">
+				<div className="mt-2 container max-w-md h-max grid grid-cols-7 grid-flow-row gap-2">
 					{daysNames.map((dayName) => (
-						<div
-							key={dayName}
-							className="font-hero font-bold uppercase text-center mb-5 text-slate-600"
-						>
+						<div key={dayName} className="font-hero font-bold uppercase text-center text-slate-600">
 							{dayName.slice(0, 3)}
 						</div>
 					))}
