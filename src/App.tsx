@@ -34,13 +34,25 @@ const App: React.FC = () => {
 		"December",
 	];
 
-	//nned to change year
 	const nextMonth = () => {
-		console.log("nextMonth");
+		if (month >= 11) {
+			return (() => {
+				setYear((prev) => prev + 1);
+				setMonth(0);
+			})();
+		}
+
 		setMonth((prev) => prev + 1);
 	};
+
 	const prevMonth = () => {
-		console.log("prevMonth");
+		if (month <= 0) {
+			return (() => {
+				setYear((prev) => prev - 1);
+				setMonth(11);
+			})();
+		}
+
 		setMonth((prev) => prev - 1);
 	};
 

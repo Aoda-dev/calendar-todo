@@ -55,7 +55,7 @@ const RightSide: React.FC<Props> = (props: Props) => {
 						<div
 							key={day.status + day.day}
 							className={`text-center font-hero font-medium cursor-pointer ${
-								day.status === "current" ? "text-slate-500" : "text-slate-300"
+								day.status === "current" ? "text-slate-600" : "text-slate-300"
 							} hover:text-pink-500`}
 						>
 							{day.day}
