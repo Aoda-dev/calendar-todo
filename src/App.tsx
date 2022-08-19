@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import * as dayjs from "dayjs";
+import dayjs from "dayjs";
 
 import LeftSide from "./components/LeftSide/LeftSide";
 import RightSide from "./components/RightSide/RightSide";
