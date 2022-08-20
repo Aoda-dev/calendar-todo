@@ -4,11 +4,15 @@ import dayjs from "dayjs";
 import LeftSide from "./components/LeftSide/LeftSide";
 import RightSide from "./components/RightSide/RightSide";
 import Pick from "./interfaces/Pick";
+import CreateTodoTitle from "./components/CreateTodoTitle/CreateTodoTitle";
+import AllTodos from "./interfaces/AllTodos";
 
 const App: React.FC = () => {
 	const [year, setYear] = useState<number>(dayjs().year());
 	const [month, setMonth] = useState<number>(dayjs().month());
 	const [pick, setPick] = useState<Pick>();
+	const [openCreateTodo, setOpenCreateTodo] = useState<boolean>(false);
+	const [allTodos, setAllTodos] = useState<Array<AllTodos>>([]);
 
 	const daysNames: Array<string> = [
 		"Sunday",
@@ -39,8 +43,9 @@ const App: React.FC = () => {
 		setPick({
 			dayName: daysNames[dayjs().day()],
 			dayNumber: dayjs().date(),
+			monthNumber: dayjs().month() + 1,
 			monthName: monthsNames[dayjs().month()],
-			todos: null,
+			todos: [],
 		});
 
 		// todo todos from localstorgae
@@ -48,19 +53,46 @@ const App: React.FC = () => {
 
 	const pickDate = (date: string): void => {
 		const $dayjs = dayjs(date, "YYYY-MM-DD");
+		const todos = allTodos?.filter((d) => d.date === date)[0] || [];
 
 		setPick({
 			dayName: daysNames[$dayjs.day()],
 			dayNumber: $dayjs.date(),
 			monthName: monthsNames[$dayjs.month()],
-			todos: null,
+			monthNumber: $dayjs.month() + 1,
+			todos: todos?.todos,
 		});
 
 		// todo todos from localstorgae
 	};
 
-	const addTodo = (date: string): void => {
-		console.log("add todo");
+	const addTodo = (todo: string): void => {
+		if (todo.trim() === "") {
+			return setOpenCreateTodo(false);
+		}
+
+		const time = `${dayjs().hour()}:${dayjs().minute()}`;
+		const date = `${year}-${pick?.monthNumber}-${pick?.dayNumber}`;
+		const index = allTodos?.findIndex((d) => d.date === date);
+
+		if (index > -1) {
+			const newTodos = allTodos.map((d) => {
+				if (d.date === date) {
+					d.todos.push({ time: time, todo: todo, done: false });
+				}
+
+				return d;
+			});
+
+			setAllTodos(newTodos);
+		} else {
+			setAllTodos((prev) => [
+				...prev,
+				{ date: date, todos: [{ time: time, todo: todo, done: false }] },
+			]);
+		}
+
+		setOpenCreateTodo(false);
 	};
 
 	const nextMonth = (): void => {
@@ -87,7 +119,7 @@ const App: React.FC = () => {
 
 	return (
 		<div className="flex h-screen w-screen items-center justify-center">
-			<LeftSide pick={pick} addTodo={addTodo} />
+			<LeftSide pick={pick} setOpenCreateTodo={setOpenCreateTodo} />
 			<RightSide
 				year={year}
 				month={month}
@@ -97,6 +129,10 @@ const App: React.FC = () => {
 				prevMonth={prevMonth}
 				pickDate={pickDate}
 			/>
+
+			{openCreateTodo && (
+				<CreateTodoTitle setOpenCreateTodo={setOpenCreateTodo} addTodo={addTodo} />
+			)}
 		</div>
 	);
 };

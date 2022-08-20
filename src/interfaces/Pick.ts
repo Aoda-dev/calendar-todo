@@ -4,7 +4,8 @@ interface Pick {
 	dayName: string;
 	dayNumber: number;
 	monthName: string;
-	todos: Array<Todos> | null;
+	monthNumber: number;
+	todos: Array<Todos>;
 }
 
 export default Pick;
