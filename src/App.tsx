@@ -11,6 +11,7 @@ const App: React.FC = () => {
 	const [year, setYear] = useState<number>(dayjs().year());
 	const [month, setMonth] = useState<number>(dayjs().month());
 	const [pick, setPick] = useState<Pick>();
+	const [currentDate, setCurrentDate] = useState<string>("");
 	const [openCreateTodo, setOpenCreateTodo] = useState<boolean>(false);
 	const [allTodos, setAllTodos] = useState<Array<AllTodos>>([]);
 
@@ -40,12 +41,14 @@ const App: React.FC = () => {
 	];
 
 	useEffect(() => {
+		setCurrentDate(`${year}-${month + 1}-${dayjs().date()}`);
+
 		setPick({
 			dayName: daysNames[dayjs().day()],
 			dayNumber: dayjs().date(),
 			monthNumber: dayjs().month() + 1,
 			monthName: monthsNames[dayjs().month()],
-			todos: [],
+			todos: null,
 		});
 
 		// todo todos from localstorgae
@@ -53,7 +56,7 @@ const App: React.FC = () => {
 
 	const pickDate = (date: string): void => {
 		const $dayjs = dayjs(date, "YYYY-MM-DD");
-		const todos = allTodos?.filter((d) => d.date === date)[0] || [];
+		const todos = allTodos?.filter((d) => d.date === date)[0] || null;
 
 		setPick({
 			dayName: daysNames[$dayjs.day()],
@@ -71,6 +74,8 @@ const App: React.FC = () => {
 			return setOpenCreateTodo(false);
 		}
 
+		const $dayjs = dayjs(currentDate, "YYYY-MM-DD");
+
 		const time = `${dayjs().hour()}:${dayjs().minute()}`;
 		const date = `${year}-${pick?.monthNumber}-${pick?.dayNumber}`;
 		const index = allTodos?.findIndex((d) => d.date === date);
@@ -85,11 +90,27 @@ const App: React.FC = () => {
 			});
 
 			setAllTodos(newTodos);
+
+			setPick({
+				dayName: daysNames[$dayjs.day()],
+				dayNumber: $dayjs.date(),
+				monthName: monthsNames[$dayjs.month()],
+				monthNumber: $dayjs.month() + 1,
+				todos: allTodos?.filter((d) => d.date === date)[0].todos,
+			});
 		} else {
 			setAllTodos((prev) => [
 				...prev,
 				{ date: date, todos: [{ time: time, todo: todo, done: false }] },
 			]);
+
+			setPick({
+				dayName: daysNames[$dayjs.day()],
+				dayNumber: $dayjs.date(),
+				monthName: monthsNames[$dayjs.month()],
+				monthNumber: $dayjs.month() + 1,
+				todos: [{ time: time, todo: todo, done: false }],
+			});
 		}
 
 		setOpenCreateTodo(false);
@@ -118,7 +139,7 @@ const App: React.FC = () => {
 	};
 
 	return (
-		<div className="flex h-screen w-screen items-center justify-center">
+		<div className="flex h-screen w-screen items-center justify-center overflow-hidden">
 			<LeftSide pick={pick} setOpenCreateTodo={setOpenCreateTodo} />
 			<RightSide
 				year={year}
@@ -128,6 +149,7 @@ const App: React.FC = () => {
 				nextMonth={nextMonth}
 				prevMonth={prevMonth}
 				pickDate={pickDate}
+				setCurrentDate={setCurrentDate}
 			/>
 
 			{openCreateTodo && (

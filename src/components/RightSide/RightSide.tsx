@@ -11,10 +11,13 @@ type Props = {
 	nextMonth: () => void;
 	prevMonth: () => void;
 	pickDate: (date: string) => void;
+
+	setCurrentDate: (state: string) => void;
 };
 
 const RightSide: React.FC<Props> = (props: Props) => {
-	const { monthsNames, month, year, daysNames, nextMonth, prevMonth, pickDate } = props;
+	const { monthsNames, month, year, daysNames, nextMonth, prevMonth, pickDate, setCurrentDate } =
+		props;
 
 	const result = getMonthDays({ year, month });
 
@@ -53,7 +56,10 @@ const RightSide: React.FC<Props> = (props: Props) => {
 					{result.map((day) => (
 						<div
 							key={day.status + day.day}
-							onClick={() => pickDate(day.date)}
+							onClick={() => {
+								pickDate(day.date);
+								setCurrentDate(day.date);
+							}}
 							className={`cursor-pointer text-center font-hero font-medium ${
 								day.status === "current" ? "text-zinc-600" : "text-zinc-300"
 							} hover:text-pink-500`}

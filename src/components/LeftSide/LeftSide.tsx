@@ -10,8 +10,6 @@ type Props = {
 const LeftSide: React.FC<Props> = (props: Props) => {
 	const { pick, setOpenCreateTodo } = props;
 
-	console.log(pick);
-
 	const showDetails = () => {
 		console.log("showing details");
 	};
@@ -30,7 +28,7 @@ const LeftSide: React.FC<Props> = (props: Props) => {
 				</div>
 			</div>
 
-			<div className="h-1/2">
+			<div className="h-1/2 overflow-hidden">
 				<div className="space-x-8 border-b border-b-slate-500 py-3 font-hero font-medium text-white/30">
 					<button onClick={() => setOpenCreateTodo(true)} className=" hover:text-white">
 						Add
@@ -41,14 +39,17 @@ const LeftSide: React.FC<Props> = (props: Props) => {
 				</div>
 
 				{pick?.todos ? (
-					<div className="space-y-2 py-8">
-						{pick.todos.map((todo) => (
+					<div className="h-[40vh] space-y-2 overflow-y-scroll py-8 scrollbar-hide">
+						{pick.todos.map((todo, index) => (
 							<div
+								key={todo.todo + todo.time + index}
 								onClick={showDetails}
 								className="group flex cursor-pointer items-center font-hero font-semibold text-white/90"
 							>
-								<CaretRight className="mt-1 group-hover:text-zinc-400" />
-								<span className="ml-2 group-hover:text-pink-500">{todo.todo}</span>
+								<CaretRight className="mt-1 self-start group-hover:text-zinc-400" />
+								<span className="ml-2 w-[80%] overflow-hidden overflow-ellipsis group-hover:text-pink-500">
+									{todo.todo}
+								</span>
 								<span className="ml-auto group-hover:text-pink-500">{todo.time}</span>
 							</div>
 						))}

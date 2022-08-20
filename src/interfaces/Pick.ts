@@ -5,7 +5,7 @@ interface Pick {
 	dayNumber: number;
 	monthName: string;
 	monthNumber: number;
-	todos: Array<Todos>;
+	todos: Array<Todos> | null;
 }
 
 export default Pick;
