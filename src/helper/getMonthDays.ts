@@ -1,19 +1,21 @@
 import dayjs from "dayjs";
+import AllTodos from "../interfaces/AllTodos";
 
 interface ArrDays {
 	status: string;
 	day: number;
 	date: string;
+	todo: boolean;
 }
 
 type Props = {
 	month: Number;
 	year: Number;
+	allTodos: Array<AllTodos>;
 };
 
 export const getMonthDays = (options: Props): Array<ArrDays> => {
-	// bind todos here
-	const { year, month } = options;
+	const { year, month, allTodos } = options;
 
 	const arrDays: Array<ArrDays> = [];
 
@@ -24,21 +26,45 @@ export const getMonthDays = (options: Props): Array<ArrDays> => {
 	const CURRENT_MONTH_DAYS_FIRST_DAY = dayjs(`${year}-${+month + 1}-1`).day();
 
 	for (let i = 0; i < CURRENT_MONTH_DAYS_FIRST_DAY; i++) {
+		const date = `${year}-${month}-${PAST_MONTH_DAYS}`;
+
+		let index = allTodos.findIndex((d) => d.date === date);
+
 		arrDays.unshift({
 			status: "past",
 			day: PAST_MONTH_DAYS,
-			date: `${year}-${month}-${PAST_MONTH_DAYS}`,
+			date: date,
+			todo: index > -1 ? true : false,
 		});
 		PAST_MONTH_DAYS--;
 	}
 
 	for (let i = 1; i <= CURRENT_MONTH_DAYS; i++) {
-		arrDays.push({ status: "current", day: i, date: `${year}-${+month + 1}-${i}` });
+		const date = `${year}-${+month + 1}-${i}`;
+
+		let index = allTodos.findIndex((d) => d.date === date);
+
+		arrDays.push({
+			status: "current",
+			day: i,
+			date: date,
+			todo: index > -1 ? true : false,
+		});
 	}
 
 	for (let i = 1; i <= FUTURE_MONTH_DAYS; i++) {
 		if (arrDays.length === 42) break;
-		arrDays.push({ status: "future", day: i, date: `${year}-${+month + 2}-${i}` });
+
+		const date = `${year}-${+month + 2}-${i}`;
+
+		let index = allTodos.findIndex((d) => d.date === date);
+
+		arrDays.push({
+			status: "future",
+			day: i,
+			date: date,
+			todo: index > -1 ? true : false,
+		});
 	}
 
 	return arrDays;

@@ -1,7 +1,9 @@
 import React from "react";
+import dayjs from "dayjs";
 import { CaretLeft, CaretRight } from "phosphor-react";
 
 import { getMonthDays } from "../../helper/getMonthDays";
+import AllTodos from "../../interfaces/AllTodos";
 
 type Props = {
 	year: number;
@@ -11,15 +13,25 @@ type Props = {
 	nextMonth: () => void;
 	prevMonth: () => void;
 	pickDate: (date: string) => void;
-
 	setCurrentDate: (state: string) => void;
+	allTodos: Array<AllTodos>;
 };
 
 const RightSide: React.FC<Props> = (props: Props) => {
-	const { monthsNames, month, year, daysNames, nextMonth, prevMonth, pickDate, setCurrentDate } =
-		props;
+	const {
+		monthsNames,
+		month,
+		year,
+		daysNames,
+		nextMonth,
+		prevMonth,
+		pickDate,
+		setCurrentDate,
+		allTodos,
+	} = props;
 
-	const result = getMonthDays({ year, month });
+	const result = getMonthDays({ year, month, allTodos });
+	const todayDate = dayjs().format("YYYY-M-D");
 
 	return (
 		<div className="h-screen w-1/2 bg-white px-10">
@@ -60,11 +72,28 @@ const RightSide: React.FC<Props> = (props: Props) => {
 								pickDate(day.date);
 								setCurrentDate(day.date);
 							}}
-							className={`cursor-pointer text-center font-hero font-medium ${
+							className={`flex cursor-pointer items-center justify-center font-hero font-medium ${
 								day.status === "current" ? "text-zinc-600" : "text-zinc-300"
 							} hover:text-pink-500`}
 						>
-							{day.day}
+							{day.date === todayDate ? (
+								<div
+									className={`flex h-7 w-7 items-center justify-center rounded-full ${
+										day.status === "current" ? "bg-pink-500" : "bg-pink-300"
+									} ${day.todo ? "text-white" : "text-zinc-50"}`}
+								>
+									{day.day}
+								</div>
+							) : (
+								<span
+									className={`${
+										day.todo &&
+										`font-bold ${day.status === "current" ? "text-pink-500" : "text-pink-300"}`
+									}`}
+								>
+									{day.day}
+								</span>
+							)}
 						</div>
 					))}
 				</div>

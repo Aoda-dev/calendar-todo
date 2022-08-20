@@ -150,6 +150,7 @@ const App: React.FC = () => {
 				prevMonth={prevMonth}
 				pickDate={pickDate}
 				setCurrentDate={setCurrentDate}
+				allTodos={allTodos}
 			/>
 
 			{openCreateTodo && (
