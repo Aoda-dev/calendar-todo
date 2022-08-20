@@ -1,7 +1,7 @@
 import React, { useState } from "react";
-import { CaretRight } from "phosphor-react";
 
 import Pick from "../../interfaces/Pick";
+import ListTodos from "./ListTodos";
 
 type Props = {
 	pick: Pick | undefined;
@@ -12,10 +12,7 @@ const LeftSide: React.FC<Props> = (props: Props) => {
 	const { pick, setOpenCreateTodo } = props;
 
 	const [details, setDetails] = useState<boolean>(false);
-
-	const showDetails = () => {
-		console.log("showing details");
-	};
+	const [select, setSelect] = useState<number>();
 
 	return (
 		<div className="h-screen w-1/2 bg-zinc-900 px-10">
@@ -44,20 +41,7 @@ const LeftSide: React.FC<Props> = (props: Props) => {
 				{pick?.todos ? (
 					<div className="h-[40vh] space-y-2 overflow-y-scroll py-8 scrollbar-hide">
 						{pick.todos.map((todo, index) => (
-							<div
-								key={todo.todo + todo.time + index}
-								onClick={showDetails}
-								className="group flex cursor-pointer items-center font-hero font-semibold text-white/90"
-							>
-								<CaretRight className="mt-1 self-start group-hover:text-zinc-400" />
-								<span className="ml-2 w-[80%] overflow-hidden overflow-ellipsis group-hover:text-pink-500">
-									{todo.todo}
-								</span>
-								<div className="ml-auto space-x-2 group-hover:text-pink-500">
-									<span>{todo.time}</span>
-									<span>PM</span>
-								</div>
-							</div>
+							<ListTodos key={todo.todo + todo.time + index} todo={todo} />
 						))}
 					</div>
 				) : (
