@@ -1,5 +1,6 @@
+import React, { useState } from "react";
 import { CaretRight } from "phosphor-react";
-import React from "react";
+
 import Pick from "../../interfaces/Pick";
 
 type Props = {
@@ -9,6 +10,8 @@ type Props = {
 
 const LeftSide: React.FC<Props> = (props: Props) => {
 	const { pick, setOpenCreateTodo } = props;
+
+	const [details, setDetails] = useState<boolean>(false);
 
 	const showDetails = () => {
 		console.log("showing details");
@@ -50,7 +53,10 @@ const LeftSide: React.FC<Props> = (props: Props) => {
 								<span className="ml-2 w-[80%] overflow-hidden overflow-ellipsis group-hover:text-pink-500">
 									{todo.todo}
 								</span>
-								<span className="ml-auto group-hover:text-pink-500">{todo.time}</span>
+								<div className="ml-auto space-x-2 group-hover:text-pink-500">
+									<span>{todo.time}</span>
+									<span>PM</span>
+								</div>
 							</div>
 						))}
 					</div>

@@ -41,7 +41,7 @@ const App: React.FC = () => {
 	];
 
 	useEffect(() => {
-		setCurrentDate(`${year}-${month + 1}-${dayjs().date()}`);
+		setCurrentDate(dayjs().format("YYYY-M-D"));
 
 		setPick({
 			dayName: daysNames[dayjs().day()],
@@ -75,8 +75,7 @@ const App: React.FC = () => {
 		}
 
 		const $dayjs = dayjs(currentDate, "YYYY-MM-DD");
-
-		const time = `${dayjs().hour()}:${dayjs().minute()}`;
+		const time = dayjs().format("HH:mm");
 		const date = `${year}-${pick?.monthNumber}-${pick?.dayNumber}`;
 		const index = allTodos?.findIndex((d) => d.date === date);
 
