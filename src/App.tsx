@@ -79,10 +79,12 @@ const App: React.FC = () => {
 		const date = `${year}-${pick?.monthNumber}-${pick?.dayNumber}`;
 		const index = allTodos?.findIndex((d) => d.date === date);
 
+		const uniqueId = Math.floor(Date.now() + Math.random());
+
 		if (index > -1) {
 			const newTodos = allTodos.map((d) => {
 				if (d.date === date) {
-					d.todos.push({ time: time, todo: todo, done: false });
+					d.todos.push({ id: uniqueId, time: time, todo: todo, done: false });
 				}
 
 				return d;
@@ -100,7 +102,7 @@ const App: React.FC = () => {
 		} else {
 			setAllTodos((prev) => [
 				...prev,
-				{ date: date, todos: [{ time: time, todo: todo, done: false }] },
+				{ date: date, todos: [{ id: uniqueId, time: time, todo: todo, done: false }] },
 			]);
 
 			setPick({
@@ -108,11 +110,38 @@ const App: React.FC = () => {
 				dayNumber: $dayjs.date(),
 				monthName: monthsNames[$dayjs.month()],
 				monthNumber: $dayjs.month() + 1,
-				todos: [{ time: time, todo: todo, done: false }],
+				todos: [{ id: uniqueId, time: time, todo: todo, done: false }],
 			});
 		}
 
 		setOpenCreateTodo(false);
+	};
+
+	const markAsDone = (id: number): void => {
+		const $dayjs = dayjs(currentDate, "YYYY-MM-DD");
+		const date = `${year}-${pick?.monthNumber}-${pick?.dayNumber}`;
+
+		const newTodos = allTodos.map((d) => {
+			if (d.date === currentDate) {
+				d.todos = d.todos.map((todo) => {
+					if (todo.id === id) {
+						todo.done = !todo.done;
+					}
+					return todo;
+				});
+			}
+			return d;
+		});
+
+		setPick({
+			dayName: daysNames[$dayjs.day()],
+			dayNumber: $dayjs.date(),
+			monthName: monthsNames[$dayjs.month()],
+			monthNumber: $dayjs.month() + 1,
+			todos: allTodos?.filter((d) => d.date === date)[0].todos,
+		});
+
+		setAllTodos(newTodos);
 	};
 
 	const nextMonth = (): void => {
@@ -139,7 +168,7 @@ const App: React.FC = () => {
 
 	return (
 		<div className="flex h-screen w-screen items-center justify-center overflow-hidden">
-			<LeftSide pick={pick} setOpenCreateTodo={setOpenCreateTodo} />
+			<LeftSide markAsDone={markAsDone} pick={pick} setOpenCreateTodo={setOpenCreateTodo} />
 			<RightSide
 				year={year}
 				month={month}
