@@ -5,12 +5,17 @@ import ListTodos from "./ListTodos";
 
 type Props = {
 	pick: Pick | undefined;
+
 	setOpenCreateTodo: (state: boolean) => void;
+	setOpenEditTodo: (state: boolean) => void;
+	setCurrentTodoId: (state: number) => void;
 	markAsDone: (id: number) => void;
+	deleteTodo: (id: number) => void;
 };
 
 const LeftSide: React.FC<Props> = (props: Props) => {
-	const { pick, setOpenCreateTodo, markAsDone } = props;
+	const { pick, setOpenCreateTodo, markAsDone, deleteTodo, setOpenEditTodo, setCurrentTodoId } =
+		props;
 
 	return (
 		<div className="h-screen w-1/2 bg-zinc-900 px-10">
@@ -36,10 +41,17 @@ const LeftSide: React.FC<Props> = (props: Props) => {
 					<button className="hover:text-white">Mark as done</button>
 				</div>
 
-				{pick?.todos ? (
+				{pick?.todos && pick?.todos.length > 0 ? (
 					<div className="h-[40vh] space-y-2 overflow-y-scroll py-8 scrollbar-hide">
 						{pick.todos.map((todo, index) => (
-							<ListTodos markAsDone={markAsDone} key={todo.id} todo={todo} />
+							<ListTodos
+								deleteTodo={deleteTodo}
+								setOpenEditTodo={setOpenEditTodo}
+								setCurrentTodoId={setCurrentTodoId}
+								markAsDone={markAsDone}
+								key={todo.id}
+								todo={todo}
+							/>
 						))}
 					</div>
 				) : (

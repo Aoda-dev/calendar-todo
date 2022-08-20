@@ -6,10 +6,13 @@ import Todos from "../../interfaces/Todos";
 type Props = {
 	todo: Todos;
 	markAsDone: (id: number) => void;
+	deleteTodo: (id: number) => void;
+	setCurrentTodoId: (state: number) => void;
+	setOpenEditTodo: (state: boolean) => void;
 };
 
 const ListTodos: React.FC<Props> = (props: Props) => {
-	const { todo, markAsDone } = props;
+	const { todo, markAsDone, deleteTodo, setOpenEditTodo, setCurrentTodoId } = props;
 
 	const [details, setDetails] = useState<boolean>(false);
 
@@ -38,7 +41,16 @@ const ListTodos: React.FC<Props> = (props: Props) => {
 				</div>
 
 				<div className={`${details ? "h-min" : "h-0"} space-x-6 font-hero font-semibold`}>
-					<button className="text-zinc-600 hover:text-zinc-400">Edit</button>
+					<button
+						onClick={(e) => {
+							e.stopPropagation();
+							setCurrentTodoId(todo.id);
+							setOpenEditTodo(true);
+						}}
+						className="text-zinc-600 hover:text-zinc-400"
+					>
+						Edit
+					</button>
 					<button
 						onClick={(e) => {
 							e.stopPropagation();
@@ -48,7 +60,15 @@ const ListTodos: React.FC<Props> = (props: Props) => {
 					>
 						Mark as done
 					</button>
-					<button className="text-zinc-600 hover:text-zinc-400">Delete</button>
+					<button
+						onClick={(e) => {
+							e.stopPropagation();
+							deleteTodo(todo.id);
+						}}
+						className="text-zinc-600 hover:text-zinc-400"
+					>
+						Delete
+					</button>
 				</div>
 			</div>
 

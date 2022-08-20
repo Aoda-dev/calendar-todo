@@ -1,4 +1,4 @@
-import React from "react";
+import React, { memo, useEffect } from "react";
 import dayjs from "dayjs";
 import { CaretLeft, CaretRight } from "phosphor-react";
 
@@ -32,6 +32,8 @@ const RightSide: React.FC<Props> = (props: Props) => {
 
 	const result = getMonthDays({ year, month, allTodos });
 	const todayDate = dayjs().format("YYYY-M-D");
+
+	// SDES OSHIBKA
 
 	return (
 		<div className="h-screen w-1/2 bg-white px-10">

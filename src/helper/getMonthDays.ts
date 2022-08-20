@@ -1,7 +1,7 @@
 import dayjs from "dayjs";
 import AllTodos from "../interfaces/AllTodos";
 
-interface ArrDays {
+export interface ArrDays {
 	status: string;
 	day: number;
 	date: string;

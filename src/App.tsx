@@ -6,6 +6,7 @@ import RightSide from "./components/RightSide/RightSide";
 import Pick from "./interfaces/Pick";
 import CreateTodoTitle from "./components/CreateTodoTitle/CreateTodoTitle";
 import AllTodos from "./interfaces/AllTodos";
+import EditTodoTitle from "./components/EditTodoTitle/EditTodoTitle";
 
 const App: React.FC = () => {
 	const [year, setYear] = useState<number>(dayjs().year());
@@ -13,6 +14,8 @@ const App: React.FC = () => {
 	const [pick, setPick] = useState<Pick>();
 	const [currentDate, setCurrentDate] = useState<string>("");
 	const [openCreateTodo, setOpenCreateTodo] = useState<boolean>(false);
+	const [openEditTodo, setOpenEditTodo] = useState<boolean>(false);
+	const [currentTodoId, setCurrentTodoId] = useState<number | null>();
 	const [allTodos, setAllTodos] = useState<Array<AllTodos>>([]);
 
 	const daysNames: Array<string> = [
@@ -144,6 +147,67 @@ const App: React.FC = () => {
 		setAllTodos(newTodos);
 	};
 
+	const deleteTodo = (id: number): void => {
+		const $dayjs = dayjs(currentDate, "YYYY-MM-DD");
+		const date = `${year}-${pick?.monthNumber}-${pick?.dayNumber}`;
+
+		let isEmpty: boolean = false;
+
+		let newTodos = allTodos.map((d) => {
+			if (d.date === currentDate) {
+				d.todos = d.todos.filter((todo) => todo.id !== id);
+
+				if (d.todos.length === 0) {
+					isEmpty = true;
+				}
+			}
+			return d;
+		});
+
+		if (isEmpty) {
+			newTodos = newTodos.filter((d) => d.date !== date);
+		}
+
+		setPick({
+			dayName: daysNames[$dayjs.day()],
+			dayNumber: $dayjs.date(),
+			monthName: monthsNames[$dayjs.month()],
+			monthNumber: $dayjs.month() + 1,
+			todos: allTodos?.filter((d) => d.date === date)[0].todos,
+		});
+
+		setAllTodos(newTodos);
+	};
+
+	const editTodo = (todoText: string): void => {
+		const $dayjs = dayjs(currentDate, "YYYY-MM-DD");
+		const date = `${year}-${pick?.monthNumber}-${pick?.dayNumber}`;
+
+		const newTodos = allTodos.map((d) => {
+			if (d.date === currentDate) {
+				d.todos = d.todos.map((todo) => {
+					if (todo.id === currentTodoId) {
+						todo.todo = todoText;
+					}
+					return todo;
+				});
+			}
+			return d;
+		});
+
+		setPick({
+			dayName: daysNames[$dayjs.day()],
+			dayNumber: $dayjs.date(),
+			monthName: monthsNames[$dayjs.month()],
+			monthNumber: $dayjs.month() + 1,
+			todos: allTodos?.filter((d) => d.date === date)[0].todos,
+		});
+
+		setAllTodos(newTodos);
+		setOpenEditTodo(false);
+		setCurrentTodoId(null);
+	};
+
 	const nextMonth = (): void => {
 		if (month >= 11) {
 			return (() => {
@@ -168,7 +232,14 @@ const App: React.FC = () => {
 
 	return (
 		<div className="flex h-screen w-screen items-center justify-center overflow-hidden">
-			<LeftSide markAsDone={markAsDone} pick={pick} setOpenCreateTodo={setOpenCreateTodo} />
+			<LeftSide
+				deleteTodo={deleteTodo}
+				markAsDone={markAsDone}
+				pick={pick}
+				setCurrentTodoId={setCurrentTodoId}
+				setOpenCreateTodo={setOpenCreateTodo}
+				setOpenEditTodo={setOpenEditTodo}
+			/>
 			<RightSide
 				year={year}
 				month={month}
@@ -183,6 +254,14 @@ const App: React.FC = () => {
 
 			{openCreateTodo && (
 				<CreateTodoTitle setOpenCreateTodo={setOpenCreateTodo} addTodo={addTodo} />
+			)}
+
+			{openEditTodo && (
+				<EditTodoTitle
+					setCurrentTodoId={setCurrentTodoId}
+					setOpenEditTodo={setOpenEditTodo}
+					editTodo={editTodo}
+				/>
 			)}
 		</div>
 	);
