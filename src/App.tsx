@@ -47,6 +47,12 @@ const App: React.FC = () => {
 	];
 
 	useEffect(() => {
+		let isMobile = window.matchMedia("only screen and (max-width: 768px)").matches;
+
+		if (!isMobile) {
+			setOpenLeftSide(true);
+		}
+
 		setCurrentDate(dayjs().format("YYYY-M-D"));
 
 		setPick({
