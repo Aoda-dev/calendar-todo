@@ -67,7 +67,7 @@ const RightSide: React.FC<Props> = (props: Props) => {
 			</div>
 
 			<div className="flex h-1/2 flex-col items-center space-y-6">
-				<div className="container mt-2 grid h-max max-w-md grid-flow-row grid-cols-7 gap-2">
+				<div className="container mt-2 grid h-max max-w-md grid-flow-row grid-cols-7 md:gap-2">
 					{daysNames.map((dayName) => (
 						<div key={dayName} className="text-center font-hero font-bold uppercase text-slate-600">
 							{dayName.slice(0, 3)}
@@ -75,7 +75,7 @@ const RightSide: React.FC<Props> = (props: Props) => {
 					))}
 				</div>
 
-				<div className="container grid h-max max-w-md grid-flow-row grid-cols-7 gap-2">
+				<div className="text-md container grid h-full max-w-md grid-flow-row grid-cols-7 pb-8 md:h-max md:gap-2 md:pb-0">
 					{result.map((day) => (
 						<div
 							key={day.status + day.day}

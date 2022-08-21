@@ -47,7 +47,14 @@ const App: React.FC = () => {
 	];
 
 	useEffect(() => {
+		// need to fix mobaile version
+
 		let isMobile = window.matchMedia("only screen and (max-width: 768px)").matches;
+
+		console.log(isMobile);
+		if (isMobile) {
+			document.querySelector("html")?.classList.add("text-xs");
+		}
 
 		if (!isMobile) {
 			setOpenLeftSide(true);

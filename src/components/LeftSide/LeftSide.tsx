@@ -39,7 +39,7 @@ const LeftSide: React.FC<Props> = (props: Props) => {
 		<div
 			className={`${
 				!openLeftSide && "-translate-x-full"
-			} fixed left-0 top-0 z-20 h-screen w-max bg-zinc-900 px-10 transition-all md:static md:w-1/2`}
+			} fixed left-0 top-0 z-20 h-screen w-full bg-zinc-900 px-10 transition-all md:static md:w-1/2`}
 		>
 			<div
 				onClick={() => setOpenLeftSide(false)}
@@ -50,7 +50,7 @@ const LeftSide: React.FC<Props> = (props: Props) => {
 
 			<div className="flex h-1/2 items-center">
 				<div className="space-y-3">
-					<h1 className="font-hero text-8xl font-thin lowercase tracking-wider text-white">
+					<h1 className="font-hero text-7xl font-thin lowercase tracking-wider text-white md:text-8xl">
 						{pick?.dayName}
 					</h1>
 					<h2 className="font-hero text-3xl font-thin tracking-widest text-pink-500">
