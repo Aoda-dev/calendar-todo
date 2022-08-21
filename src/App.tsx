@@ -1,5 +1,7 @@
 import { useEffect, useState } from "react";
 import dayjs from "dayjs";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 import LeftSide from "./components/LeftSide/LeftSide";
 import RightSide from "./components/RightSide/RightSide";
@@ -120,6 +122,116 @@ const App: React.FC = () => {
 		setOpenCreateTodo(false);
 	};
 
+	const selectAllHandler = (date: string): void => {
+		const index = allTodos.findIndex((d) => d.date === date);
+
+		if (index === -1) {
+			toast("🦄 No todos!", {
+				position: "bottom-right",
+				autoClose: 3000,
+				hideProgressBar: false,
+				closeOnClick: true,
+				pauseOnHover: true,
+				draggable: true,
+				progress: undefined,
+				theme: "dark",
+			});
+
+			return;
+		}
+
+		const $dayjs = dayjs(currentDate, "YYYY-MM-DD");
+
+		const newTodos = allTodos.map((d) => {
+			if (d.date === date) {
+				d.todos.forEach((todo) => (todo.selectAll = !todo.selectAll));
+			}
+
+			return d;
+		});
+
+		setAllTodos(newTodos);
+
+		setPick({
+			dayName: daysNames[$dayjs.day()],
+			dayNumber: $dayjs.date(),
+			monthName: monthsNames[$dayjs.month()],
+			monthNumber: $dayjs.month() + 1,
+			todos: allTodos?.filter((d) => d.date === date)[0].todos,
+		});
+	};
+
+	const deleteAllHandler = (date: string): void => {
+		const isSelected = allTodos.find((d) => d.date === date)?.todos[0].selectAll;
+
+		if (!isSelected) {
+			toast("🎀 Please selectall before delete!", {
+				position: "bottom-right",
+				autoClose: 3000,
+				hideProgressBar: false,
+				closeOnClick: true,
+				pauseOnHover: true,
+				draggable: true,
+				progress: undefined,
+				theme: "dark",
+			});
+
+			return;
+		}
+
+		const $dayjs = dayjs(currentDate, "YYYY-MM-DD");
+		const newTodos = allTodos.filter((d) => d.date !== date);
+
+		setAllTodos(newTodos);
+		setPick({
+			dayName: daysNames[$dayjs.day()],
+			dayNumber: $dayjs.date(),
+			monthName: monthsNames[$dayjs.month()],
+			monthNumber: $dayjs.month() + 1,
+			todos: [],
+		});
+	};
+
+	const markAsDoneAllHandler = (date: string): void => {
+		const isSelected = allTodos.find((d) => d.date === date)?.todos[0].selectAll;
+
+		if (!isSelected) {
+			toast("🎁 Please selectall before mark as done!", {
+				position: "bottom-right",
+				autoClose: 3000,
+				hideProgressBar: false,
+				closeOnClick: true,
+				pauseOnHover: true,
+				draggable: true,
+				progress: undefined,
+				theme: "dark",
+			});
+
+			return;
+		}
+
+		const $dayjs = dayjs(currentDate, "YYYY-MM-DD");
+
+		const newTodos = allTodos.map((d) => {
+			if (d.date === date) {
+				d.todos.forEach((todo) => {
+					todo.done = !todo.done;
+					todo.selectAll = false;
+				});
+			}
+			return d;
+		});
+
+		setAllTodos(newTodos);
+		setPick({
+			dayName: daysNames[$dayjs.day()],
+			dayNumber: $dayjs.date(),
+			monthName: monthsNames[$dayjs.month()],
+			monthNumber: $dayjs.month() + 1,
+			todos: allTodos?.filter((d) => d.date === date)[0].todos,
+		});
+	};
+
 	const markAsDone = (id: number): void => {
 		const $dayjs = dayjs(currentDate, "YYYY-MM-DD");
 		const date = `${year}-${pick?.monthNumber}-${pick?.dayNumber}`;
@@ -233,12 +345,16 @@ const App: React.FC = () => {
 	return (
 		<div className="flex h-screen w-screen items-center justify-center overflow-hidden">
 			<LeftSide
+				year={year}
 				deleteTodo={deleteTodo}
 				markAsDone={markAsDone}
 				pick={pick}
 				setCurrentTodoId={setCurrentTodoId}
 				setOpenCreateTodo={setOpenCreateTodo}
 				setOpenEditTodo={setOpenEditTodo}
+				selectAllHandler={selectAllHandler}
+				deleteAllHandler={deleteAllHandler}
+				markAsDoneAllHandler={markAsDoneAllHandler}
 			/>
 			<RightSide
 				year={year}
@@ -263,6 +379,8 @@ const App: React.FC = () => {
 					editTodo={editTodo}
 				/>
 			)}
+
+			<ToastContainer />
 		</div>
 	);
 };

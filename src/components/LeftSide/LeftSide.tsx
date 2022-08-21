@@ -5,17 +5,30 @@ import ListTodos from "./ListTodos";
 
 type Props = {
 	pick: Pick | undefined;
-
+	year: number;
 	setOpenCreateTodo: (state: boolean) => void;
 	setOpenEditTodo: (state: boolean) => void;
 	setCurrentTodoId: (state: number) => void;
 	markAsDone: (id: number) => void;
 	deleteTodo: (id: number) => void;
+	selectAllHandler: (date: string) => void;
+	deleteAllHandler: (date: string) => void;
+	markAsDoneAllHandler: (date: string) => void;
 };
 
 const LeftSide: React.FC<Props> = (props: Props) => {
-	const { pick, setOpenCreateTodo, markAsDone, deleteTodo, setOpenEditTodo, setCurrentTodoId } =
-		props;
+	const {
+		pick,
+		year,
+		setOpenCreateTodo,
+		markAsDone,
+		deleteTodo,
+		setOpenEditTodo,
+		setCurrentTodoId,
+		selectAllHandler,
+		deleteAllHandler,
+		markAsDoneAllHandler,
+	} = props;
 
 	return (
 		<div className="h-screen w-1/2 bg-zinc-900 px-10">
@@ -36,9 +49,28 @@ const LeftSide: React.FC<Props> = (props: Props) => {
 					<button onClick={() => setOpenCreateTodo(true)} className=" hover:text-white">
 						Add
 					</button>
-					<button className="hover:text-white">Select all</button>
-					<button className="hover:text-white">Delete</button>
-					<button className="hover:text-white">Mark as done</button>
+					<button
+						onClick={() => selectAllHandler(`${year}-${pick?.monthNumber}-${pick?.dayNumber}`)}
+						className="hover:text-white"
+					>
+						{pick?.todos && pick?.todos[0]?.selectAll ? (
+							<span className="text-pink-500">Selected</span>
+						) : (
+							"Select all"
+						)}
+					</button>
+					<button
+						onClick={() => deleteAllHandler(`${year}-${pick?.monthNumber}-${pick?.dayNumber}`)}
+						className="hover:text-white"
+					>
+						Delete
+					</button>
+					<button
+						onClick={() => markAsDoneAllHandler(`${year}-${pick?.monthNumber}-${pick?.dayNumber}`)}
+						className="hover:text-white"
+					>
+						Mark as done
+					</button>
 				</div>
 
 				{pick?.todos && pick?.todos.length > 0 ? (
