@@ -1,6 +1,6 @@
 import React, { memo, useEffect } from "react";
 import dayjs from "dayjs";
-import { CaretLeft, CaretRight } from "phosphor-react";
+import { CaretLeft, CaretRight, List } from "phosphor-react";
 
 import { getMonthDays } from "../../helper/getMonthDays";
 import AllTodos from "../../interfaces/AllTodos";
@@ -10,6 +10,7 @@ type Props = {
 	month: number;
 	monthsNames: Array<string>;
 	daysNames: Array<string>;
+	setOpenLeftSide: (state: boolean) => void;
 	nextMonth: () => void;
 	prevMonth: () => void;
 	pickDate: (date: string) => void;
@@ -19,6 +20,7 @@ type Props = {
 
 const RightSide: React.FC<Props> = (props: Props) => {
 	const {
+		setOpenLeftSide,
 		monthsNames,
 		month,
 		year,
@@ -33,10 +35,17 @@ const RightSide: React.FC<Props> = (props: Props) => {
 	const result = getMonthDays({ year, month, allTodos });
 	const todayDate = dayjs().format("YYYY-M-D");
 
-	// SDES OSHIBKA
-
 	return (
-		<div className="h-screen w-1/2 bg-white px-10">
+		<div className="relative h-screen w-screen bg-white px-10 md:static md:w-1/2">
+			<div
+				onClick={() => {
+					setOpenLeftSide(true);
+				}}
+				className="absolute left-5 top-5 cursor-pointer text-3xl md:hidden"
+			>
+				<List />
+			</div>
+
 			<div className="flex h-1/2 items-center justify-center">
 				<div className="space-y-3">
 					<div className="flex items-center justify-center space-x-3">

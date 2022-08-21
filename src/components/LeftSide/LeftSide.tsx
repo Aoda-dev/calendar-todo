@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { X } from "phosphor-react";
 
 import Pick from "../../interfaces/Pick";
 import ListTodos from "./ListTodos";
@@ -6,6 +7,8 @@ import ListTodos from "./ListTodos";
 type Props = {
 	pick: Pick | undefined;
 	year: number;
+	openLeftSide: boolean;
+	setOpenLeftSide: (state: boolean) => void;
 	setOpenCreateTodo: (state: boolean) => void;
 	setOpenEditTodo: (state: boolean) => void;
 	setCurrentTodoId: (state: number) => void;
@@ -28,10 +31,23 @@ const LeftSide: React.FC<Props> = (props: Props) => {
 		selectAllHandler,
 		deleteAllHandler,
 		markAsDoneAllHandler,
+		openLeftSide,
+		setOpenLeftSide,
 	} = props;
 
 	return (
-		<div className="h-screen w-1/2 bg-zinc-900 px-10">
+		<div
+			className={`${
+				!openLeftSide && "-translate-x-full"
+			} fixed left-0 top-0 z-20 h-screen w-max bg-zinc-900 px-10 transition-all md:static md:w-1/2`}
+		>
+			<div
+				onClick={() => setOpenLeftSide(false)}
+				className="absolute top-5 right-5 cursor-pointer text-3xl text-white md:hidden"
+			>
+				<X />
+			</div>
+
 			<div className="flex h-1/2 items-center">
 				<div className="space-y-3">
 					<h1 className="font-hero text-8xl font-thin lowercase tracking-wider text-white">
@@ -46,7 +62,7 @@ const LeftSide: React.FC<Props> = (props: Props) => {
 
 			<div className="h-1/2 overflow-hidden">
 				<div className="space-x-8 border-b border-b-slate-500 py-3 font-hero font-medium text-white/30">
-					<button onClick={() => setOpenCreateTodo(true)} className=" hover:text-white">
+					<button onClick={() => setOpenCreateTodo(true)} className="hover:text-white">
 						Add
 					</button>
 					<button

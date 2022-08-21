@@ -19,6 +19,7 @@ const App: React.FC = () => {
 	const [openEditTodo, setOpenEditTodo] = useState<boolean>(false);
 	const [currentTodoId, setCurrentTodoId] = useState<number | null>();
 	const [allTodos, setAllTodos] = useState<Array<AllTodos>>([]);
+	const [openLeftSide, setOpenLeftSide] = useState<boolean>(false);
 
 	const daysNames: Array<string> = [
 		"Sunday",
@@ -345,6 +346,8 @@ const App: React.FC = () => {
 	return (
 		<div className="flex h-screen w-screen items-center justify-center overflow-hidden">
 			<LeftSide
+				openLeftSide={openLeftSide}
+				setOpenLeftSide={setOpenLeftSide}
 				year={year}
 				deleteTodo={deleteTodo}
 				markAsDone={markAsDone}
@@ -357,6 +360,7 @@ const App: React.FC = () => {
 				markAsDoneAllHandler={markAsDoneAllHandler}
 			/>
 			<RightSide
+				setOpenLeftSide={setOpenLeftSide}
 				year={year}
 				month={month}
 				monthsNames={monthsNames}
